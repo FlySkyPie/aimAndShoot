@@ -23,11 +23,11 @@ export class Matrix {
 
       this.data = values.slice();
     } else if (values == "RANDOM") {
-      this.data = Array(this.rows * this.cols).map(
+      this.data = Array.from({ length: this.rows * this.cols }).map(
         (_) => Math.random() * 2 - 1
       );
     } else {
-      this.data = Array(this.rows * this.cols).fill(values);
+      this.data = Array.from({ length: this.rows * this.cols }, () => values);
     }
   }
 
