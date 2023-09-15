@@ -4,7 +4,7 @@ import { init, update } from "../main";
 import { state } from "./state";
 
 export class GuiControls {
-  public main: any;
+  public main: HTMLDivElement;
 
   constructor() {
     document.body.addEventListener("touchstart", (e) => {

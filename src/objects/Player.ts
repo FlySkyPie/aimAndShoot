@@ -76,7 +76,7 @@ export class Player implements IPlayerEntity {
       return;
     }
 
-    if (this.ai) this.updateAI(input);
+    if (this.ai) this.updateAI();
 
     this.angle = Math.atan2(
       this.looking.y - this.pos.y,
@@ -208,7 +208,7 @@ export class Player implements IPlayerEntity {
     );
   }
 
-  public updateAI(target: any) {
+  public updateAI() {
     const data = Array(6 * Constants.maxEnemies).fill(0);
 
     let t = 0,

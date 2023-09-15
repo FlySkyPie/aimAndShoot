@@ -7,14 +7,30 @@ type ILayer = {
   activation: string;
 };
 
+type IActivations = {
+  [key: string]: {
+    func: (x: number) => number;
+    dfunc: (x: number) => number;
+  };
+};
+
+type INN = {
+  layers: {
+    [key: number]: ILayer;
+    length: number;
+  };
+  lr: number;
+  it: number;
+};
+
 export class Dejavu {
   public layers: {
     length: number;
     [key: number]: ILayer;
   };
-  public lr: any;
-  public it: any;
-  public activations: any;
+  public lr: number;
+  public it: number;
+  public activations: IActivations;
 
   constructor(nn = [0], learningRate = 0.1, iterations = 100) {
     this.layers = { length: 0 };
@@ -78,7 +94,7 @@ export class Dejavu {
     return this.layers[this.layers.length - 1]["output"];
   }
 
-  fit(inputs: number[][], labels: number[][]) {
+  public fit(inputs: number[][], labels: number[][]) {
     let it = 0;
 
     while (it < this.it) {
@@ -176,7 +192,7 @@ export class Dejavu {
     link.click();
   }
 
-  public load(nn: any) {
+  public load(nn: INN) {
     this.lr = nn.lr;
 
     this.it = nn.it;

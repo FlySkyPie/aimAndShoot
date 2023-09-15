@@ -1,6 +1,6 @@
 export class Matrix {
-  public rows: any;
-  public cols: any;
+  public rows: number;
+  public cols: number;
   public data: number[];
 
   constructor(
