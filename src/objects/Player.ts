@@ -1,10 +1,12 @@
+import type { IFacade } from "../interfaces/facade.interface";
+import type { IPlayerEntity } from "../interfaces/player-entity.interface";
 import { Constants } from "../constants";
 import { timeFacade } from "../facades/time-facade";
-import type { IFacade } from "../interfaces/facade.interface";
+
 import { Bullet } from "./Bullet";
 import { Dejavu } from "./Dejavu";
 
-export class Player {
+export class Player implements IPlayerEntity {
   public pos: { x: number; y: number };
   public health: number = 10;
   public angle: number;
@@ -165,7 +167,9 @@ export class Player {
       }
     }
 
-    if (this.isShooting && this.coolDown > 0 && this.spread < 1) {
+    const isTriggerFire =
+      this.isShooting && this.coolDown > 1 && this.spread < 1;
+    if (isTriggerFire) {
       this.facade.sound.play();
 
       this.spread = this.spreadInit;
@@ -193,8 +197,8 @@ export class Player {
       this.shootsFired++;
     }
 
-    if (this.coolDown < this.coolDownInit && !this.isShooting)
-      this.coolDown += 0.25;
+    if (this.coolDown < this.coolDownInit && !isTriggerFire)
+      this.coolDown += 0.1;
 
     this.spread -= 1;
   }
