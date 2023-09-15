@@ -1,11 +1,12 @@
 import type { IFacade } from "../interfaces/facade.interface";
+import type { IBulletEntity } from "../interfaces/bullet-entity.interface";
 import type { Player } from "./Player";
 import { Constants } from "../constants";
 import { timeFacade } from "../facades/time-facade";
 
 // import { state } from "./state";
 
-export class Bullet {
+export class Bullet implements IBulletEntity {
   public pos: { x: number; y: number };
 
   public size: number;
@@ -16,7 +17,6 @@ export class Bullet {
   public targets: Player[];
 
   constructor(
-    private facade: IFacade,
     public owner: Player,
     x: number,
     y: number,
@@ -77,12 +77,5 @@ export class Bullet {
     return (
       Math.abs(this.pos.x - target.pos.x) + Math.abs(this.pos.y - target.pos.y)
     );
-  }
-
-  public show() {
-    this.facade.c.fillStyle = "black";
-    this.facade.c.beginPath();
-    this.facade.c.arc(this.pos.x, this.pos.y, this.size, 0, Constants.TWOPI);
-    this.facade.c.fill();
   }
 }

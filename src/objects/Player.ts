@@ -182,7 +182,6 @@ export class Player implements IPlayerEntity {
 
       this.facade.bullets.push(
         new Bullet(
-          this.facade,
           this,
           this.pos.x + Math.cos(this.angle) * 40,
           this.pos.y + Math.sin(this.angle) * 40,

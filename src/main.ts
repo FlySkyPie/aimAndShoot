@@ -80,7 +80,7 @@ const draw = function () {
   state.c.clearRect(0, 0, Constants.w, Constants.h);
 
   for (let i = 0; i < state.bullets.length; i++) {
-    state.bullets[i].show();
+    RenderUtils.renderBullet(state.c, state.bullets[i]);
   }
 
   for (let i = 0; i < state.players.length; i++) {

@@ -1,7 +1,15 @@
 import { Constants } from "../constants";
+import type { IBulletEntity } from "../interfaces/bullet-entity.interface";
 import type { IPlayerEntity } from "../interfaces/player-entity.interface";
 
 export abstract class RenderUtils {
+  public static renderBullet(ctx: CanvasRenderingContext2D,bullet: IBulletEntity) {
+    ctx.fillStyle = "black";
+    ctx.beginPath();
+    ctx.arc(bullet.pos.x, bullet.pos.y, bullet.size, 0, Constants.TWOPI);
+    ctx.fill();
+  }
+
   public static renderPlayer(
     ctx: CanvasRenderingContext2D,
     player: IPlayerEntity
