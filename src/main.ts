@@ -2,6 +2,7 @@ import { Constants } from "./constants";
 import { timeFacade } from "./facades/time-facade";
 import { GuiControls } from "./objects/GuiControls";
 import { state } from "./objects/state";
+import { RenderUtils } from "./utils/render.utils";
 
 export const init = function () {
   const oldCanvas = document.querySelector("#game");
@@ -83,7 +84,7 @@ const draw = function () {
   }
 
   for (let i = 0; i < state.players.length; i++) {
-    state.players[i].show();
+    RenderUtils.renderPlayer(state.c, state.players[i]);
   }
 
   state.c.textAlign = "start";
@@ -184,7 +185,7 @@ const addEventsListener = function () {
   });
 
   document.body.addEventListener("keydown", (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     switch (e.keyCode) {
       case 37:
@@ -278,7 +279,6 @@ const addEventsListener = function () {
   };
 };
 
-state.aPlayer.src = "sounds/shoot.mp3";
 state.artwork.src = "artwork.png";
 
 state.artwork.onload = (_) => {
