@@ -166,12 +166,7 @@ export class Player {
     }
 
     if (this.isShooting && this.coolDown > 0 && this.spread < 1) {
-      if (this.facade.aPlayer.paused)
-        this.facade.aPlayer
-          .play()
-          .then((_) => _)
-          .catch((e) => e);
-      else this.facade.aPlayer.currentTime = 0;
+      this.facade.sound.play();
 
       this.spread = this.spreadInit;
 

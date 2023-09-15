@@ -19,5 +19,5 @@ export interface IFacade extends IPlayerFacade {
   u: number;
   enemies: Player[];
   genetics: Genetics;
-  aPlayer: HTMLAudioElement;
+  sound: Howl;
 }
