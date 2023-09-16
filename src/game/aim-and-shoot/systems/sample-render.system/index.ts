@@ -17,7 +17,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 import dayjs from "dayjs";
 
-import type { IUpdatable } from "../../interfaces/updatable.interface";
+import type { IUpdatable } from "../../../interfaces/updatable.interface";
 
 /**
  * @reference https://github.com/fbsamples/Canvas-Streaming-Example
