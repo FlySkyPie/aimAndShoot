@@ -1,0 +1,13 @@
+.root {
+    width : 100vw;
+    height: 100vh;
+
+    display       : flex;
+    flex-direction: row;
+}
+
+.canvas {
+    width           : 100vh;
+    height          : 100vh;
+    background-color: rgba(0, 0, 0, 0.1);
+}

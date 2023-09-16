@@ -1,0 +1,8 @@
+.root {
+    width     : calc((100vw - 100vh) * 0.5);
+    height    : 100%;
+    padding   : 16px;
+    box-sizing: border-box;
+
+    overflow-y: auto;
+}
