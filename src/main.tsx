@@ -1,9 +1,13 @@
+import { CombatPanel } from "./app";
 import "./index.css";
 
-import { CombatPanel } from "./app";
-
-customElements.define('combat-panel', CombatPanel);
+customElements.define("combat-panel", CombatPanel);
 
 const panel = document.querySelector<CombatPanel>("combat-panel")!;
 
-console.log(panel)
+panel.addEventListener("canvas-ready", ({ detail }) => {
+  console.log(detail);
+});
+
+
+
