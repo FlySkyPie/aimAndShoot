@@ -10,7 +10,12 @@ export const CombatPanelComponent: React.FC<IProps> = ({ onCanvasReady }) => {
   return (
     <div className={styles.root}>
       <AgentList />
-      <canvas ref={onCanvasReady} className={styles.canvas} />
+      <canvas
+        ref={onCanvasReady}
+        className={styles.canvas}
+        width="1024"
+        height="1024"
+      />
     </div>
   );
 };
