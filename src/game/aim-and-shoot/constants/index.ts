@@ -1,8 +1,8 @@
-export const Constants = {
-  maxEnemies: 7,
-  w: 1024,
-  h: 1024,
-  w2: 1024 / 2,
-  h2: 1024 / 2,
-  TWOPI: Math.PI * 2,
-};
+export abstract class Constants {
+  public static maxEnemies = 7;
+  public static w = 1024;
+  public static h = 1024;
+  public static w2 = 1024 / 2;
+  public static h2 = 1024 / 2;
+  public static TWOPI = Math.PI * 2;
+}

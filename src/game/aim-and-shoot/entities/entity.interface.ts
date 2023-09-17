@@ -5,6 +5,12 @@ import type { ProjectileEmitterComponent } from "../components/projectile-emitte
 import type { TimeComponent } from "../components/time";
 import type { WarriorMiscComponent } from "../components/warrior-misc";
 import type { WarriorStatisticsComponent } from "../components/warrior-statistics";
+import type { GameEvent } from "../events";
+
+export type EventEntity = {
+  eventQueue: GameEvent[];
+  events: GameEvent[];
+};
 
 export type TimeEntity = {
   timeComponent: TimeComponent;
@@ -26,5 +32,6 @@ export type BulletEntity = {
 };
 
 export type Entity = Partial<TimeEntity> &
+  Partial<EventEntity> &
   Partial<AgentEntity> &
   Partial<BulletEntity>;
