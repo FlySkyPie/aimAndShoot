@@ -5,6 +5,7 @@ import type { ProjectileEmitterComponent } from "../components/projectile-emitte
 import type { TimeComponent } from "../components/time";
 import type { WarriorMiscComponent } from "../components/warrior-misc";
 import type { WarriorStatisticsComponent } from "../components/warrior-statistics";
+import type { DejavuComponent } from "../components/dejavu/dejavu";
 import type { GameEvent } from "../events";
 
 export type EventEntity = {
@@ -22,7 +23,7 @@ export type AgentEntity = {
   health: HealthComponent;
   projectileEmitter: ProjectileEmitterComponent;
   warrior: WarriorMiscComponent;
-  brain?: true;
+  brain?: DejavuComponent;
   statistics: WarriorStatisticsComponent;
 };
 

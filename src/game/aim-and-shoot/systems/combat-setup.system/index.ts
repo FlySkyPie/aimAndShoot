@@ -4,7 +4,14 @@ import type { IUpdatable } from "../../../interfaces/updatable.interface";
 
 import type { AgentEntity, Entity, IQueries } from "../../entities";
 import { EntityFactory } from "../../utilities/entity-factory";
+import { Constants } from "../../constants";
 
+/**
+ * @dependency Dependencies:
+ * - `InitialCombatEvent`
+ * @sideEffect Side Effects:
+ * - Remove and create `AgentEntity`
+ */
 export class CombatSetupSystem implements IUpdatable {
   update(world: World<Entity>, queries: IQueries): void {
     let allDead = queries.botPlayer.size === 0 ? false : true;
@@ -29,6 +36,9 @@ export class CombatSetupSystem implements IUpdatable {
       }
 
       world.add<AgentEntity>(EntityFactory.createAgent());
+      for (let i = 0; i < Constants.maxEnemies; i++) {
+        world.add<AgentEntity>(EntityFactory.createBotAgent());
+      }
     }
   }
 }
