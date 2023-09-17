@@ -2,7 +2,7 @@ import type { World } from "miniplex";
 
 import type { IUpdatable } from "../../../interfaces/updatable.interface";
 
-import type { BulletEntity, Entity, IQueries } from "../../entities";
+import type { Entity, IQueries } from "../../entities";
 import type { TimeComponent } from "../../components/time";
 import type { ParticleComponent } from "../../components/particle";
 import { Constants } from "../../constants";
@@ -44,13 +44,14 @@ export class MovementSystem implements IUpdatable {
       statistics,
     } of queries.player) {
       this.updatePlayer(
+        world,
+        queries,
         timeComponent,
         particle,
         health,
         warrior,
         projectileEmitter,
         statistics,
-        world,
         id
       );
     }
@@ -62,15 +63,17 @@ export class MovementSystem implements IUpdatable {
    * @todo Separate logics to other systems.
    */
   private updatePlayer(
+    world: World<Entity>,
+    queries: IQueries,
     timeComponent: TimeComponent,
     particle: ParticleComponent,
     health: HealthComponent,
     warrior: WarriorMiscComponent,
     projectileEmitter: ProjectileEmitterComponent,
     statistics: WarriorStatisticsComponent,
-    world: World<Entity>,
     id: string
   ) {
+    const { eventQueue } = queries.Event.first!;
     if (warrior.isDead) return;
 
     if (health.current <= 0) {
@@ -193,21 +196,13 @@ export class MovementSystem implements IUpdatable {
 
       // targets.splice(targets.indexOf(particle), 1);
 
-      world.add<BulletEntity>({
-        attackEffect: {
-          damage: 1,
-          isGone: false,
-          owner: id,
-          speed: 1.2,
-          targets: [],
-        },
-        particle: {
+      eventQueue.push({
+        type: "shoot-event",
+        paylaod: {
           angle: particle.angle,
-          pos: {
-            x: particle.pos.x + Math.cos(particle.angle) * 40,
-            y: particle.pos.y + Math.sin(particle.angle) * 40,
-          },
-          size: 5,
+          ownerId: id,
+          x: particle.pos.x,
+          y: particle.pos.y,
         },
       });
 

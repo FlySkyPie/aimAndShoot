@@ -17,6 +17,9 @@ dependencies:
   dayjs:
     specifier: ^1.11.9
     version: 1.11.9
+  howler:
+    specifier: ^2.2.3
+    version: 2.2.3
   miniplex:
     specifier: ^2.0.0
     version: 2.0.0
@@ -34,6 +37,9 @@ dependencies:
     version: 1.67.0
 
 devDependencies:
+  '@types/howler':
+    specifier: ^2.2.9
+    version: 2.2.9
   '@types/react':
     specifier: ^18.2.15
     version: 18.2.21
@@ -927,6 +933,10 @@ packages:
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
     dev: false
 
+  /@types/howler@2.2.9:
+    resolution: {integrity: sha512-kNi8mBM+IAmMzo1xhFlR8pKUWqCz9kEtiT1Xp5hZW0ynQl2wUg0EAm+brsHvhahMzxlADt0Xhu0jV/NHmk/Ibg==}
+    dev: true
+
   /@types/json-schema@7.0.13:
     resolution: {integrity: sha512-RbSSoHliUbnXj3ny0CNFOoxrIDV6SUGyStHsvDqosw6CkdPV8TtWGlfecuK4ToyMEAql6pzNxgCFKanovUzlgQ==}
     dev: true
@@ -1653,6 +1663,10 @@ packages:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
     dependencies:
       react-is: 16.13.1
+    dev: false
+
+  /howler@2.2.3:
+    resolution: {integrity: sha512-QM0FFkw0LRX1PR8pNzJVAY25JhIWvbKMBFM4gqk+QdV+kPXOhleWGCB6AiAF/goGjIHK2e/nIElplvjQwhr0jg==}
     dev: false
 
   /ignore@5.2.4:

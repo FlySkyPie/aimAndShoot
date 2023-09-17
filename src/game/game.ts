@@ -16,6 +16,7 @@ import { PostTimeTickSystem } from "./aim-and-shoot/systems/post-time-tick.syste
 import { EventSystem } from "./aim-and-shoot/systems/event.system";
 import { CombatSetupSystem } from "./aim-and-shoot/systems/combat-setup.system";
 import { BotAISystem } from "./aim-and-shoot/systems/bot-ai.system";
+import { ProjectileSystem } from "./aim-and-shoot/systems/projectile.system";
 
 export class Game {
   private animationId: number = NaN;
@@ -33,6 +34,7 @@ export class Game {
       new HumanControlSystem(canvas),
       new BotAISystem(),
       new MovementSystem(),
+      new ProjectileSystem(),
       new RenderSystem(canvas),
       new PoolCleanSystem(),
       new CombatSetupSystem(),

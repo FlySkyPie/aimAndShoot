@@ -10,6 +10,6 @@ export class EventSystem implements IUpdatable {
     Event.events = [...Event.eventQueue];
     Event.eventQueue = [];
 
-    console.log("Event", Event);
+    // console.log("Event", Event);
   }
 }

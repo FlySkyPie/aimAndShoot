@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/joy": "5.0.0-beta.6",
     "dayjs": "^1.11.9",
+    "howler": "^2.2.3",
     "miniplex": "^2.0.0",
     "nanoid": "^5.0.1",
     "react": "^18.2.0",
@@ -21,6 +22,7 @@
     "sass": "^1.67.0"
   },
   "devDependencies": {
+    "@types/howler": "^2.2.9",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
