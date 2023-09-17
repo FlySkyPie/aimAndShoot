@@ -12,6 +12,8 @@ import { RenderSystem } from "./aim-and-shoot/systems/render.system";
 import { MovementSystem } from "./aim-and-shoot/systems/movement.system";
 import { TimeTickSystem } from "./aim-and-shoot/systems/time-tick.system";
 import { PoolCleanSystem } from "./aim-and-shoot/systems/pool-clean-system";
+import { HumanControlSystem } from "./aim-and-shoot/systems/human-control.system";
+import { PostTimeTickSystem } from "./aim-and-shoot/systems/post-time-tick.system";
 
 export class Game {
   private animationId: number = NaN;
@@ -25,9 +27,11 @@ export class Game {
   constructor(canvas: HTMLCanvasElement) {
     this.systems = [
       new TimeTickSystem(),
+      new HumanControlSystem(),
       new MovementSystem(),
       new RenderSystem(canvas),
       new PoolCleanSystem(),
+      new PostTimeTickSystem(),
     ];
 
     this.world = new World<Entity>();
@@ -38,8 +42,18 @@ export class Game {
         "particle",
         "health",
         "projectileEmitter",
-        "warrior"
+        "warrior",
+        "statistics"
       ),
+      humanPlayer: this.world
+        .with(
+          "particle",
+          "health",
+          "projectileEmitter",
+          "warrior",
+          "statistics"
+        )
+        .without("brain"),
     };
 
     this.init();
@@ -119,6 +133,15 @@ export class Game {
         friction: 0.97,
         isDead: false,
         iAnim: 0,
+      },
+      statistics: {
+        age: 0,
+        fitness: 0,
+        friendlyFire: 0,
+        hits: 0,
+        move: 0,
+        selfInjury: 0,
+        shootsFired: 0,
       },
     });
   }

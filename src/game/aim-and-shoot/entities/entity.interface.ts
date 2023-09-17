@@ -4,6 +4,7 @@ import type { ParticleComponent } from "../components/particle";
 import type { ProjectileEmitterComponent } from "../components/projectile-emitter";
 import type { TimeComponent } from "../components/time";
 import type { WarriorMiscComponent } from "../components/warrior-misc";
+import type { WarriorStatisticsComponent } from "../components/warrior-statistics";
 
 export type TimeEntity = {
   timeComponent: TimeComponent;
@@ -15,6 +16,8 @@ export type AgentEntity = {
   health: HealthComponent;
   projectileEmitter: ProjectileEmitterComponent;
   warrior: WarriorMiscComponent;
+  brain?: true;
+  statistics: WarriorStatisticsComponent;
 };
 
 export type BulletEntity = {
