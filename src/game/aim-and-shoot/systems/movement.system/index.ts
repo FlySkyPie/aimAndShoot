@@ -2,7 +2,7 @@ import type { World } from "miniplex";
 
 import type { IUpdatable } from "../../../interfaces/updatable.interface";
 
-import type { Entity, IQueries } from "../../entities";
+import type { BulletEntity, Entity, IQueries } from "../../entities";
 import type { TimeComponent } from "../../components/time";
 import type { ParticleComponent } from "../../components/particle";
 import { Constants } from "../../constants";
@@ -12,7 +12,7 @@ import { ProjectileEmitterComponent } from "../../components/projectile-emitter"
 import { WarriorStatisticsComponent } from "../../components/warrior-statistics";
 
 export class MovementSystem implements IUpdatable {
-  update(_: World<Entity>, queries: IQueries): void {
+  update(world: World<Entity>, queries: IQueries): void {
     const { timeComponent } = queries.Time.first!;
     for (const { attackEffect, particle } of queries.bullet) {
       if (attackEffect.isGone) return;
@@ -36,6 +36,7 @@ export class MovementSystem implements IUpdatable {
     }
 
     for (const {
+      id,
       particle,
       warrior,
       health,
@@ -48,18 +49,27 @@ export class MovementSystem implements IUpdatable {
         health,
         warrior,
         projectileEmitter,
-        statistics
+        statistics,
+        world,
+        id
       );
     }
   }
 
+  /**
+   * Migrate all player update logics from original project.
+   *
+   * @todo Separate logics to other systems.
+   */
   private updatePlayer(
     timeComponent: TimeComponent,
     particle: ParticleComponent,
     health: HealthComponent,
     warrior: WarriorMiscComponent,
     projectileEmitter: ProjectileEmitterComponent,
-    statistics: WarriorStatisticsComponent
+    statistics: WarriorStatisticsComponent,
+    world: World<Entity>,
+    id: string
   ) {
     if (warrior.isDead) return;
 
@@ -176,22 +186,30 @@ export class MovementSystem implements IUpdatable {
 
       projectileEmitter.coolDown -= 1;
 
+      world;
+
       // const targets = particle.facade.players.slice(0);
+      // const targets: string[] = [];
 
       // targets.splice(targets.indexOf(particle), 1);
 
-      // particle.facade.bullets.push(
-      //   new Bullet(
-      //     particle,
-      //     particle.pos.x + Math.cos(particle.angle) * 40,
-      //     particle.pos.y + Math.sin(particle.angle) * 40,
-      //     5,
-      //     particle.angle,
-      //     1.2,
-      //     1,
-      //     targets
-      //   )
-      // );
+      world.add<BulletEntity>({
+        attackEffect: {
+          damage: 1,
+          isGone: false,
+          owner: id,
+          speed: 1.2,
+          targets: [],
+        },
+        particle: {
+          angle: particle.angle,
+          pos: {
+            x: particle.pos.x + Math.cos(particle.angle) * 40,
+            y: particle.pos.y + Math.sin(particle.angle) * 40,
+          },
+          size: 5,
+        },
+      });
 
       statistics.shootsFired++;
     }

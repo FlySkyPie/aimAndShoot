@@ -27,7 +27,7 @@ export class Game {
   constructor(canvas: HTMLCanvasElement) {
     this.systems = [
       new TimeTickSystem(),
-      new HumanControlSystem(),
+      new HumanControlSystem(canvas),
       new MovementSystem(),
       new RenderSystem(canvas),
       new PoolCleanSystem(),
@@ -39,6 +39,7 @@ export class Game {
       Time: this.world.with("timeComponent"),
       bullet: this.world.with("particle", "attackEffect"),
       player: this.world.with(
+        "id",
         "particle",
         "health",
         "projectileEmitter",
@@ -102,7 +103,7 @@ export class Game {
     });
 
     this.world.add<AgentEntity>({
-      name: "Test",
+      id: "Test",
       particle: {
         angle: Math.PI * 0.25,
         pos: { x: 512, y: 512 },

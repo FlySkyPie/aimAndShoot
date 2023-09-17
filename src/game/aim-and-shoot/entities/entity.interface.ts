@@ -11,7 +11,7 @@ export type TimeEntity = {
 };
 
 export type AgentEntity = {
-  name: string;
+  id: string;
   particle: ParticleComponent;
   health: HealthComponent;
   projectileEmitter: ProjectileEmitterComponent;

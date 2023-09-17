@@ -8,7 +8,12 @@ export interface IQueries {
   player: Query<
     With<
       Entity,
-      "particle" | "health" | "projectileEmitter" | "warrior" | "statistics"
+      | "id"
+      | "particle"
+      | "health"
+      | "projectileEmitter"
+      | "warrior"
+      | "statistics"
     >
   >;
   humanPlayer: Query<
