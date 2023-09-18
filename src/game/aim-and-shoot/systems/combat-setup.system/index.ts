@@ -35,6 +35,10 @@ export class CombatSetupSystem implements IUpdatable {
         world.remove(player);
       }
 
+      for (const player of queries.bullet) {
+        world.remove(player);
+      }
+
       world.add<AgentEntity>(EntityFactory.createAgent());
       for (let i = 0; i < Constants.maxEnemies; i++) {
         world.add<AgentEntity>(EntityFactory.createBotAgent());

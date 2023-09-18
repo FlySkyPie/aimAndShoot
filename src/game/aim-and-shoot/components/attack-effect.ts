@@ -6,10 +6,10 @@ export interface AttackEffectComponent {
   /**
    * Agent targets.
    */
-  targets: string[];
+  targets: number[];
 
   /**
    * Agent owner.
    */
-  owner: string;
+  owner: number;
 }

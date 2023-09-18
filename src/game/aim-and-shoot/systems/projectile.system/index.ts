@@ -7,6 +7,9 @@ import gunSfxUrl from "../../assets/gun-sfx/Air-rifle-gun-shot.mp3";
 import type { BulletEntity, Entity, IQueries } from "../../entities";
 import { EventChecker } from "../../utilities/event-checker";
 
+const isNotUndefined = <T>(value: T | undefined): value is T =>
+  value !== undefined;
+
 /**
  * @dependency Dependencies:
  * - `ShootEvent`
@@ -24,7 +27,9 @@ export class ProjectileSystem implements IUpdatable {
 
     const shootEvents = events.filter(EventChecker.isShootEvent);
     if (shootEvents.length !== 0) {
-      const agentIds = queries.player.entities.map((item) => item.id);
+      const agentIds = queries.player.entities
+        .map((item) => world.id(item))
+        .filter(isNotUndefined);
       shootEvents.forEach(({ paylaod: { angle, ownerId, x, y } }) => {
         this.fireSFX.play();
 

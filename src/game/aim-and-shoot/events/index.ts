@@ -1,7 +1,7 @@
 export type ShootEvent = {
   type: "shoot-event";
   paylaod: {
-    ownerId: string;
+    ownerId: number;
     angle: number;
     x: number;
     y: number;

@@ -1,4 +1,4 @@
-import type { World } from "miniplex";
+import type { With, World } from "miniplex";
 
 import type { IUpdatable } from "../../../interfaces/updatable.interface";
 
@@ -6,10 +6,6 @@ import type { Entity, IQueries } from "../../entities";
 import type { TimeComponent } from "../../components/time";
 import type { ParticleComponent } from "../../components/particle";
 import { Constants } from "../../constants";
-import { WarriorMiscComponent } from "../../components/warrior-misc";
-import { HealthComponent } from "../../components/health";
-import { ProjectileEmitterComponent } from "../../components/projectile-emitter";
-import { WarriorStatisticsComponent } from "../../components/warrior-statistics";
 
 export class MovementSystem implements IUpdatable {
   update(world: World<Entity>, queries: IQueries): void {
@@ -30,49 +26,12 @@ export class MovementSystem implements IUpdatable {
 
       particle.pos.x +=
         Math.cos(particle.angle) * attackEffect.speed * timeComponent.deltaTime;
-
       particle.pos.y +=
         Math.sin(particle.angle) * attackEffect.speed * timeComponent.deltaTime;
-
-      // for (let i = this.targets.length - 1; i >= 0; i--) {
-      //   if (this.targets[i].isDead) continue;
-
-      //   if (this.distance(this.targets[i]) < this.targets[i].size + this.size) {
-      //     if (this.owner.ai !== this.targets[i].ai) this.owner.hits++;
-      //     else this.owner.friendlyFire++;
-
-      //     this.targets[i].speed.x += Math.cos(this.angle) * 0.1;
-
-      //     this.targets[i].speed.y += Math.sin(this.angle) * 0.1;
-
-      //     this.targets[i].health -= this.damage;
-
-      //     this.isGone = true;
-
-      //     break;
-      //   }
-      // }
     }
 
-    for (const {
-      id,
-      particle,
-      warrior,
-      health,
-      projectileEmitter,
-      statistics,
-    } of queries.player) {
-      this.updatePlayer(
-        world,
-        queries,
-        timeComponent,
-        particle,
-        health,
-        warrior,
-        projectileEmitter,
-        statistics,
-        id
-      );
+    for (const player of queries.player) {
+      this.updatePlayer(world, queries, player, timeComponent);
     }
   }
 
@@ -82,17 +41,28 @@ export class MovementSystem implements IUpdatable {
    * @todo Separate logics to other systems.
    */
   private updatePlayer(
-    _: World<Entity>,
+    world: World<Entity>,
     queries: IQueries,
-    timeComponent: TimeComponent,
-    particle: ParticleComponent,
-    health: HealthComponent,
-    warrior: WarriorMiscComponent,
-    projectileEmitter: ProjectileEmitterComponent,
-    statistics: WarriorStatisticsComponent,
-    id: string
+    player: With<
+      Entity,
+      | "id"
+      | "particle"
+      | "health"
+      | "projectileEmitter"
+      | "warrior"
+      | "statistics"
+    >,
+    timeComponent: TimeComponent
+    // particle: ParticleComponent,
+    // health: HealthComponent,
+    // warrior: WarriorMiscComponent,
+    // projectileEmitter: ProjectileEmitterComponent,
+    // statistics: WarriorStatisticsComponent,
+    // id: string
   ) {
     const { eventQueue } = queries.Event.first!;
+    const { id, particle, health, warrior, projectileEmitter, statistics } =
+      player;
     if (warrior.isDead) return;
 
     if (health.current <= 0) {
@@ -193,7 +163,7 @@ export class MovementSystem implements IUpdatable {
         type: "shoot-event",
         paylaod: {
           angle: particle.angle,
-          ownerId: id,
+          ownerId: world.id(player)!,
           x: particle.pos.x,
           y: particle.pos.y,
         },
