@@ -51,7 +51,7 @@ export abstract class EntityFactory {
     };
   }
 
-  public static createBotAgent(): AgentEntity {
+  public static createBotAgent(): AgentEntity & { brain: DejavuComponent } {
     return {
       id: nanoid(),
       particle: {

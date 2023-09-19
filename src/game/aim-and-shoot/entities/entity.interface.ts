@@ -32,7 +32,6 @@ export type BulletEntity = {
   attackEffect: AttackEffectComponent;
 };
 
-export type Entity = Partial<TimeEntity> &
-  Partial<EventEntity> &
-  Partial<AgentEntity> &
-  Partial<BulletEntity>;
+export type Entity = Partial<
+  TimeEntity & EventEntity & AgentEntity & BulletEntity
+>;

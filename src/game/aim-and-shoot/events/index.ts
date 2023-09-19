@@ -12,4 +12,8 @@ export type InitialCombatEvent = {
   type: "initial-combat";
 };
 
-export type GameEvent = ShootEvent | InitialCombatEvent;
+export type EvolveCombatEvent = {
+  type: "evolve-combate";
+};
+
+export type GameEvent = ShootEvent | InitialCombatEvent | EvolveCombatEvent;
