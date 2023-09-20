@@ -2,15 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import type { CombatPanelEventMap } from "./interfaces/combat-panel.interface";
-import { CombatPanelComponent } from "./combat-panel";
+import { CombatPanel } from "./combat-panel";
 
-export class CombatPanel extends HTMLElement {
+export class CombatPanelComponent extends HTMLElement {
   constructor() {
     super();
 
     ReactDOM.createRoot(this).render(
       <React.StrictMode>
-        <CombatPanelComponent onCanvasReady={this.handeCanvasReady} />
+        <CombatPanel />
       </React.StrictMode>
     );
   }
@@ -30,9 +30,9 @@ export class CombatPanel extends HTMLElement {
   /**
    * Convert React event to Web API event.
    */
-  private handeCanvasReady = (canvas: HTMLCanvasElement) => {
-    const event = new CustomEvent("canvas-ready", { detail: canvas });
+  // private handeCanvasReady = (canvas: HTMLCanvasElement) => {
+  //   const event = new CustomEvent("canvas-ready", { detail: canvas });
 
-    this.dispatchEvent(event);
-  };
+  //   this.dispatchEvent(event);
+  // };
 }

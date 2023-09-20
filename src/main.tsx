@@ -1,12 +1,16 @@
-import { CombatPanel } from "./app";
-import { Game } from "./game/game";
+import React from "react";
+import ReactDOM from "react-dom/client";
+
+import { BattleZone } from "./web-components/battle-zone";
+import { CombatPanel } from "./app/combat-panel";
 import "./index.css";
 
-customElements.define("combat-panel", CombatPanel);
+customElements.define("battle-zone", BattleZone);
 
-const panel = document.querySelector<CombatPanel>("combat-panel")!;
+const element = document.querySelector<HTMLDivElement>("#app")!;
 
-panel.addEventListener("canvas-ready", ({ detail }) => {
-  const game = new Game(detail);
-  game.start();
-});
+ReactDOM.createRoot(element).render(
+  <React.StrictMode>
+    <CombatPanel />
+  </React.StrictMode>
+);
