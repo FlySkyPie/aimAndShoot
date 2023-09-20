@@ -1,22 +1,24 @@
+import { useState } from "react";
+
 import { AgentList } from "./components/agent-list";
+import { IntroPage } from "./components/intro-page";
 
 import styles from "./styles.module.scss";
 
-type IProps = {
-  // onCanvasReady: (canvas: HTMLCanvasElement) => void;
-};
+export const CombatPanel: React.FC = () => {
+  const [isStart, setStart] = useState(false);
 
-export const CombatPanel: React.FC<IProps> = () => {
-  return (
-    <div className={styles.root}>
-      <AgentList />
-      {/* <canvas
-        ref={onCanvasReady}
-        className={styles.canvas}
-        width="1024"
-        height="1024"
-      /> */}
-      <battle-zone class={styles.canvas}></battle-zone>
-    </div>
-  );
+  if (isStart) {
+    return (
+      <div className={styles.root}>
+        <AgentList />
+        <battle-zone
+          ref={(ref) => console.log(ref)}
+          class={styles.canvas}
+        ></battle-zone>
+      </div>
+    );
+  }
+
+  return <IntroPage onStart={() => setStart(true)} />;
 };

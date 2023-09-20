@@ -20,6 +20,8 @@ import { ProjectileSystem } from "./aim-and-shoot/systems/projectile.system";
 import { DamageSystem } from "./aim-and-shoot/systems/damage.system";
 
 export class Game implements IDisposable {
+  private isRunning = false;
+
   private animationId: number = NaN;
 
   private systems: (IUpdatable & IDisposable)[] = [];
@@ -80,12 +82,17 @@ export class Game implements IDisposable {
 
   public dispose(): void {
     cancelAnimationFrame(this.animationId);
+    if (this.isRunning) {
+      this.isRunning = false;
+      return;
+    }
     this.systems.forEach((system) => system.dispose());
     this.systems.length = 0;
     this.world.clear();
   }
 
   public start() {
+    this.isRunning = true;
     this.update();
   }
 
@@ -95,6 +102,12 @@ export class Game implements IDisposable {
 
   private update = () => {
     this.systems.forEach((item) => item.update(this.world, this.queries));
+    if (!this.isRunning) {
+      this.systems.forEach((system) => system.dispose());
+      this.systems.length = 0;
+      this.world.clear();
+      return;
+    }
     this.animationId = requestAnimationFrame(this.update);
   };
 
