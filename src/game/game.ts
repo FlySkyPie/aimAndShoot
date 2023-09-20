@@ -1,6 +1,6 @@
 import { World } from "miniplex";
 
-import type { IUpdatable } from "./interfaces/updatable.interface";
+import type { IUpdatable, IDisposable } from "./interfaces";
 import type {
   Entity,
   EventEntity,
@@ -19,10 +19,10 @@ import { BotAISystem } from "./aim-and-shoot/systems/bot-ai.system";
 import { ProjectileSystem } from "./aim-and-shoot/systems/projectile.system";
 import { DamageSystem } from "./aim-and-shoot/systems/damage.system";
 
-export class Game {
+export class Game implements IDisposable {
   private animationId: number = NaN;
 
-  private systems: IUpdatable[] = [];
+  private systems: (IUpdatable & IDisposable)[] = [];
 
   private world: World<Entity>;
 
@@ -76,6 +76,13 @@ export class Game {
     };
 
     this.init();
+  }
+
+  public dispose(): void {
+    cancelAnimationFrame(this.animationId);
+    this.systems.forEach((system) => system.dispose());
+    this.systems.length = 0;
+    this.world.clear();
   }
 
   public start() {

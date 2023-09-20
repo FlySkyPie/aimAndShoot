@@ -1,6 +1,6 @@
 import type { World } from "miniplex";
 
-import type { IUpdatable } from "../../../interfaces/updatable.interface";
+import type { IUpdatable, IDisposable } from "../../../interfaces";
 
 import type { Entity, IQueries } from "../../entities";
 
@@ -8,7 +8,7 @@ import type { Entity, IQueries } from "../../entities";
  * @sideEffect Side Effects:
  * - Remove `BulletEntity`
  */
-export class PoolCleanSystem implements IUpdatable {
+export class PoolCleanSystem implements IUpdatable, IDisposable {
   public update(world: World<Entity>, queries: IQueries): void {
     for (const bullet of queries.bullet) {
       const {
@@ -18,5 +18,9 @@ export class PoolCleanSystem implements IUpdatable {
         world.remove(bullet);
       }
     }
+  }
+
+  public dispose(): void {
+    /** Nothing to release */
   }
 }

@@ -1,11 +1,11 @@
 import type { World } from "miniplex";
 
-import type { IUpdatable } from "../../../interfaces/updatable.interface";
+import type { IUpdatable, IDisposable } from "../../../interfaces";
 
 import type { Entity, IQueries } from "../../entities";
 import { Constants } from "../../constants";
 
-export class BotAISystem implements IUpdatable {
+export class BotAISystem implements IUpdatable, IDisposable {
   public update(_: World<Entity>, queries: IQueries): void {
     for (const { id, brain, warrior } of queries.botPlayer) {
       const data = Array(6 * Constants.maxEnemies).fill(0);
@@ -84,5 +84,9 @@ export class BotAISystem implements IUpdatable {
         ? (warrior.isShooting = true)
         : (warrior.isShooting = false);
     }
+  }
+
+  public dispose(): void {
+    /** Nothing to release */
   }
 }

@@ -1,7 +1,7 @@
 import type { World } from "miniplex";
 import { Howl } from "howler";
 
-import type { IUpdatable } from "../../../interfaces/updatable.interface";
+import type { IUpdatable, IDisposable } from "../../../interfaces";
 import gunSfxUrl from "../../assets/gun-sfx/Air-rifle-gun-shot.mp3";
 
 import type { BulletEntity, Entity, IQueries } from "../../entities";
@@ -16,7 +16,7 @@ const isNotUndefined = <T>(value: T | undefined): value is T =>
  * @sideEffect Side Effects:
  * - Create `BulletEntity`
  */
-export class ProjectileSystem implements IUpdatable {
+export class ProjectileSystem implements IUpdatable, IDisposable {
   private fireSFX = new Howl({
     src: [gunSfxUrl],
     volume: 0.3,
@@ -52,5 +52,9 @@ export class ProjectileSystem implements IUpdatable {
         });
       });
     }
+  }
+
+  public dispose(): void {
+    this.fireSFX.unload();
   }
 }

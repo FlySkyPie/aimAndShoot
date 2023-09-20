@@ -1,6 +1,6 @@
 import type { World } from "miniplex";
 
-import type { IUpdatable } from "../../../interfaces/updatable.interface";
+import type { IUpdatable, IDisposable } from "../../../interfaces";
 
 import type { AgentEntity, Entity, IQueries } from "../../entities";
 import { ParticleComponent } from "../../components";
@@ -10,7 +10,7 @@ import { ParticleComponent } from "../../components";
  * - Modifiy `BulletEntity`
  * - Modifiy `AgentEntity`
  */
-export class DamageSystem implements IUpdatable {
+export class DamageSystem implements IUpdatable, IDisposable {
   public update(world: World<Entity>, queries: IQueries): void {
     for (const bullet of queries.bullet) {
       const { particle, attackEffect } = bullet;
@@ -19,7 +19,7 @@ export class DamageSystem implements IUpdatable {
       const owner = world.entity(ownerId) as AgentEntity;
 
       for (const agentId of targets) {
-        const agent = world.entity(agentId) as AgentEntity ;
+        const agent = world.entity(agentId) as AgentEntity;
         // if (!agent) {
         //   continue;
         // }
@@ -43,6 +43,10 @@ export class DamageSystem implements IUpdatable {
         }
       }
     }
+  }
+
+  public dispose(): void {
+    /** Nothing to release */
   }
 
   private static distance(

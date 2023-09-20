@@ -1,6 +1,6 @@
 import type { World } from "miniplex";
 
-import type { IUpdatable } from "../../../interfaces/updatable.interface";
+import type { IUpdatable, IDisposable } from "../../../interfaces";
 
 import type { Entity, IQueries } from "../../entities";
 import type { ParticleComponent } from "../../components/particle";
@@ -9,7 +9,7 @@ import { HealthComponent } from "../../components/health";
 import { ProjectileEmitterComponent } from "../../components/projectile-emitter";
 import { WarriorMiscComponent } from "../../components/warrior-misc";
 
-export class RenderSystem implements IUpdatable {
+export class RenderSystem implements IUpdatable,IDisposable {
   private ctx: CanvasRenderingContext2D;
 
   constructor(canvas: HTMLCanvasElement) {
@@ -31,6 +31,10 @@ export class RenderSystem implements IUpdatable {
     } of queries.player) {
       this.renderPlayer(particle, health, projectileEmitter, warrior);
     }
+  }
+
+  public dispose(): void {
+     /** Nothing to release */
   }
 
   private renderBullet(particle: ParticleComponent) {

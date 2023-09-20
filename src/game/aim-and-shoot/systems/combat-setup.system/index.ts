@@ -1,6 +1,6 @@
 import type { With, World } from "miniplex";
 
-import type { IUpdatable } from "../../../interfaces/updatable.interface";
+import type { IUpdatable, IDisposable } from "../../../interfaces";
 
 import type { AgentEntity, Entity, IQueries } from "../../entities";
 import { EntityFactory } from "../../utilities/entity-factory";
@@ -23,8 +23,8 @@ type IQueryAgent = With<
  * @sideEffect Side Effects:
  * - Remove and create `AgentEntity`
  */
-export class CombatSetupSystem implements IUpdatable {
-  update(world: World<Entity>, queries: IQueries): void {
+export class CombatSetupSystem implements IUpdatable, IDisposable {
+  public update(world: World<Entity>, queries: IQueries): void {
     let allDead = queries.botPlayer.size === 0 ? false : true;
     for (const { warrior } of queries.botPlayer) {
       if (!warrior.isDead) {
@@ -84,6 +84,10 @@ export class CombatSetupSystem implements IUpdatable {
         world.add<AgentEntity>(bot);
       }
     }
+  }
+
+  public dispose(): void {
+    /** Nothing to release */
   }
 
   private mutate(child: IQueryAgent) {

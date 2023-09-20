@@ -1,14 +1,14 @@
 import type { With, World } from "miniplex";
 
-import type { IUpdatable } from "../../../interfaces/updatable.interface";
+import type { IUpdatable, IDisposable } from "../../../interfaces";
 
 import type { Entity, IQueries } from "../../entities";
 import type { TimeComponent } from "../../components/time";
 import type { ParticleComponent } from "../../components/particle";
 import { Constants } from "../../constants";
 
-export class MovementSystem implements IUpdatable {
-  update(world: World<Entity>, queries: IQueries): void {
+export class MovementSystem implements IUpdatable, IDisposable {
+  public update(world: World<Entity>, queries: IQueries): void {
     const { timeComponent } = queries.Time.first!;
     for (const { attackEffect, particle } of queries.bullet) {
       if (attackEffect.isGone) return;
@@ -33,6 +33,10 @@ export class MovementSystem implements IUpdatable {
     for (const player of queries.player) {
       this.updatePlayer(world, queries, player, timeComponent);
     }
+  }
+
+  public dispose(): void {
+    /** Nothing to release */
   }
 
   /**
