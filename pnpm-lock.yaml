@@ -14,6 +14,9 @@ dependencies:
   '@mui/joy':
     specifier: 5.0.0-beta.6
     version: 5.0.0-beta.6(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)
+  clsx:
+    specifier: ^2.0.0
+    version: 2.0.0
   dayjs:
     specifier: ^1.11.9
     version: 1.11.9

@@ -1,0 +1,16 @@
+.mouse-svg {
+    transform: scale(0.7);
+
+    .disable {
+        pointer-events: none;
+        fill          : #777777;
+    }
+
+    path {
+        fill: #aaaaaa;
+    }
+
+    path:hover {
+        fill: #ffffff;
+    }
+}

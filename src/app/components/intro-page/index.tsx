@@ -1,10 +1,9 @@
 import { useCallback, useMemo, useState } from "react";
 import { Button } from "@mui/joy";
 
-import { Keyboard } from "./keyboard";
-import { Mouse } from "./mouse";
+import { Keyboard } from "./keyboard/keyboard";
+import { Mouse } from "./mouse/mouse";
 import styles from "./styles.module.scss";
-import "./style.css";
 
 type IProps = {
   onStart: () => void;
@@ -37,12 +36,12 @@ export const IntroPage: React.FC<IProps> = ({ onStart }) => {
   }, [input]);
 
   return (
-    <div className={"credit-page" + " " + styles.root}>
-      <div className="controls">
+    <div className={styles.root}>
+      <div className={styles.controls}>
         <Keyboard onHover={handleHover} />
         <Mouse onHover={handleHover} />
       </div>
-      <div className="description">{description}</div>
+      <div className={styles.description}>{description}</div>
       <Button onClick={onStart}>Start</Button>
     </div>
   );

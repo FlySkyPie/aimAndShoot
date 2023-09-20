@@ -7,4 +7,33 @@
     display        : flex;
     justify-content: center;
     align-items    : center;
+
+    position: absolute;
+    top     : 0;
+    left    : 0;
+    width   : 100vw;
+    height  : 100vh;
+    z-index : 20;
+
+    display        : flex;
+    flex-direction : column;
+    justify-content: center;
+    align-items    : center;
+
+    color: #ffffff;
+
+
+    background-color: #16161D;
+}
+
+.description {
+    padding   : 16px;
+    min-height: 50px;
+}
+
+.controls {
+    display       : flex;
+    flex-direction: row;
+    align-items   : center;
+    gap           : 16px;
 }
