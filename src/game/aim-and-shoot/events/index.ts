@@ -13,7 +13,19 @@ export type InitialCombatEvent = {
 };
 
 export type EvolveCombatEvent = {
-  type: "evolve-combate";
+  type: "evolve-combat";
 };
 
-export type GameEvent = ShootEvent | InitialCombatEvent | EvolveCombatEvent;
+export type AgentDeadEvent = {
+  type: "agent-dead";
+  payload: {
+    name: string;
+    isBot: boolean;
+  };
+};
+
+export type GameEvent =
+  | ShootEvent
+  | InitialCombatEvent
+  | EvolveCombatEvent
+  | AgentDeadEvent;

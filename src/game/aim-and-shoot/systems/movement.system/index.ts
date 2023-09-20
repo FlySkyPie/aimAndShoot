@@ -65,12 +65,27 @@ export class MovementSystem implements IUpdatable, IDisposable {
     // id: string
   ) {
     const { eventQueue } = queries.Event.first!;
-    const { id, particle, health, warrior, projectileEmitter, statistics } =
-      player;
+    const {
+      id,
+      particle,
+      health,
+      warrior,
+      projectileEmitter,
+      statistics,
+      brain,
+    } = player;
     if (warrior.isDead) return;
 
     if (health.current <= 0) {
       warrior.isDead = true;
+
+      eventQueue.push({
+        type: "agent-dead",
+        payload: {
+          name: id,
+          isBot: brain !== undefined,
+        },
+      });
 
       statistics.age = (Date.now() - timeComponent.startTime) / 1000;
 

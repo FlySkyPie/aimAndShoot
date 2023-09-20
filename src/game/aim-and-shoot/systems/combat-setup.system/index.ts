@@ -36,13 +36,16 @@ export class CombatSetupSystem implements IUpdatable, IDisposable {
     const { timeComponent } = queries.Time.first!;
     const { events, eventQueue } = queries.Event.first!;
     if (allDead) {
-      eventQueue.push({ type: "evolve-combate" });
+      eventQueue.push({ type: "evolve-combat" });
     }
 
     const initialEvents = events.filter(
       ({ type }) => type === "initial-combat"
     );
-    if (initialEvents.length !== 0) {
+    const playerDeadEvents = events.filter(
+      (event) => event.type === "agent-dead" && !event.payload.isBot
+    );
+    if (initialEvents.length !== 0 || playerDeadEvents.length !== 0) {
       for (const bullet of queries.bullet) {
         world.remove(bullet);
       }
@@ -57,37 +60,45 @@ export class CombatSetupSystem implements IUpdatable, IDisposable {
       }
     }
 
-    const evolveEvents = events.filter(({ type }) => type === "evolve-combate");
+    const evolveEvents = events.filter(({ type }) => type === "evolve-combat");
     if (evolveEvents.length !== 0) {
-      for (const bullet of queries.bullet) {
-        world.remove(bullet);
-      }
-
-      this.evaluate(queries, timeComponent);
-
-      const newPopulation: AgentEntity[] = [];
-      for (let i = 0; i < queries.botPlayer.size; i++) {
-        const a = this.selectParent(queries);
-        const b = this.selectParent(queries);
-        const child = this.crossOver(a, b);
-        if (Math.random() < 0.25) {
-          this.mutate(child);
-        }
-        newPopulation.push(child);
-      }
-      for (const player of queries.player) {
-        world.remove(player);
-      }
-
-      world.add<AgentEntity>(EntityFactory.createAgent());
-      for (const bot of newPopulation) {
-        world.add<AgentEntity>(bot);
-      }
+      this.handleEvolveCombatEvent(world, queries, timeComponent);
     }
   }
 
   public dispose(): void {
     /** Nothing to release */
+  }
+
+  private handleEvolveCombatEvent(
+    world: World<Entity>,
+    queries: IQueries,
+    timeComponent: TimeComponent
+  ): void {
+    for (const bullet of queries.bullet) {
+      world.remove(bullet);
+    }
+
+    this.evaluate(queries, timeComponent);
+
+    const newPopulation: AgentEntity[] = [];
+    for (let i = 0; i < queries.botPlayer.size; i++) {
+      const a = this.selectParent(queries);
+      const b = this.selectParent(queries);
+      const child = this.crossOver(a, b);
+      if (Math.random() < 0.25) {
+        this.mutate(child);
+      }
+      newPopulation.push(child);
+    }
+    for (const player of queries.player) {
+      world.remove(player);
+    }
+
+    world.add<AgentEntity>(EntityFactory.createAgent());
+    for (const bot of newPopulation) {
+      world.add<AgentEntity>(bot);
+    }
   }
 
   private mutate(child: IQueryAgent) {
