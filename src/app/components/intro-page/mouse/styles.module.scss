@@ -1,5 +1,7 @@
 .mouse-svg {
-    transform: scale(0.7);
+    width       : 100%;
+    height      : 100%;
+    // transform: scale(0.7);
 
     .disable {
         pointer-events: none;

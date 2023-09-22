@@ -31,9 +31,43 @@
     min-height: 50px;
 }
 
+.action {
+    @media (max-width: 1400px) {
+        position       : fixed;
+        width          : 100%;
+        bottom         : 0;
+        left           : 0;
+        width          : 50%;
+        height         : 50%;
+        display        : flex;
+        justify-content: end;
+        align-items    : center;
+    }
+}
+
 .controls {
     display       : flex;
     flex-direction: row;
     align-items   : center;
     gap           : 16px;
+
+    max-width: 100vw;
+
+    @media (max-width: 1400px) {
+        flex-direction: column;
+        align-items   : end;
+    }
+
+    .keyboard {
+        flex-shrink: 1;
+    }
+
+    .mouse {
+        flex-shrink   : 1;
+        height        : 360px;
+
+        @media (max-width: 1400px) {
+            height: 210px;
+        }
+    }
 }

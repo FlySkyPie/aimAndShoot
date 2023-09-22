@@ -38,11 +38,17 @@ export const IntroPage: React.FC<IProps> = ({ onStart }) => {
   return (
     <div className={styles.root}>
       <div className={styles.controls}>
-        <Keyboard onHover={handleHover} />
-        <Mouse onHover={handleHover} />
+        <div className={styles.keyboard}>
+          <Keyboard onHover={handleHover} />
+        </div>
+        <div className={styles.mouse}>
+          <Mouse onHover={handleHover} />
+        </div>
       </div>
       <div className={styles.description}>{description}</div>
-      <Button onClick={onStart}>Start</Button>
+      <div className={styles.action}>
+        <Button onClick={onStart}>Start</Button>
+      </div>
     </div>
   );
 };
