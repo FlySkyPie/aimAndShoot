@@ -21,6 +21,7 @@ export type AgentDeadEvent = {
   payload: {
     name: string;
     isBot: boolean;
+    kiiledBy?: string;
   };
 };
 

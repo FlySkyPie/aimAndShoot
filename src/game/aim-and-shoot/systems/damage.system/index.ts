@@ -12,6 +12,8 @@ import { ParticleComponent } from "../../components";
  */
 export class DamageSystem implements IUpdatable, IDisposable {
   public update(world: World<Entity>, queries: IQueries): void {
+    const { eventQueue } = queries.Event.first!;
+
     for (const bullet of queries.bullet) {
       const { particle, attackEffect } = bullet;
       const { angle, size } = particle;
@@ -19,10 +21,10 @@ export class DamageSystem implements IUpdatable, IDisposable {
       const owner = world.entity(ownerId) as AgentEntity;
 
       for (const agentId of targets) {
-        const agent = world.entity(agentId) as AgentEntity;
-        // if (!agent) {
-        //   continue;
-        // }
+        const agent = world.entity(agentId) as AgentEntity | undefined;
+        if (!agent) {
+          continue;
+        }
         if (agent.warrior.isDead) {
           continue;
         }
@@ -37,6 +39,17 @@ export class DamageSystem implements IUpdatable, IDisposable {
           agent.warrior.speed.x += Math.cos(angle) * 0.1;
           agent.warrior.speed.y += Math.sin(angle) * 0.1;
           agent.health.current -= attackEffect.damage;
+
+          if (agent.health.current <= 0) {
+            eventQueue.push({
+              type: "agent-dead",
+              payload: {
+                name: agent.warrior.name,
+                isBot: agent.brain !== undefined,
+                kiiledBy: owner.warrior.name,
+              },
+            });
+          }
 
           attackEffect.isGone = true;
           break;

@@ -1,23 +1,29 @@
 import { World } from "miniplex";
 
 import type { IUpdatable, IDisposable } from "./interfaces";
+import type { IGameEventMap } from "./interfaces/game-event-map";
 import type {
   Entity,
   EventEntity,
   IQueries,
   TimeEntity,
 } from "./aim-and-shoot/entities";
-import { RenderSystem } from "./aim-and-shoot/systems/render.system";
-import { MovementSystem } from "./aim-and-shoot/systems/movement.system";
-import { TimeTickSystem } from "./aim-and-shoot/systems/time-tick.system";
-import { PoolCleanSystem } from "./aim-and-shoot/systems/pool-clean-system";
-import { HumanControlSystem } from "./aim-and-shoot/systems/human-control.system";
-import { PostTimeTickSystem } from "./aim-and-shoot/systems/post-time-tick.system";
-import { EventSystem } from "./aim-and-shoot/systems/event.system";
-import { CombatSetupSystem } from "./aim-and-shoot/systems/combat-setup.system";
-import { BotAISystem } from "./aim-and-shoot/systems/bot-ai.system";
-import { ProjectileSystem } from "./aim-and-shoot/systems/projectile.system";
-import { DamageSystem } from "./aim-and-shoot/systems/damage.system";
+import { TypedEventEmitter } from "./utilities/typed-event-emitter";
+import { GameHelper } from "./helpers/game.helper";
+import {
+  RenderSystem,
+  MovementSystem,
+  TimeTickSystem,
+  PoolCleanSystem,
+  HumanControlSystem,
+  PostTimeTickSystem,
+  EventSystem,
+  CombatSetupSystem,
+  BotAISystem,
+  ProjectileSystem,
+  DamageSystem,
+} from "./aim-and-shoot/systems";
+import { EventChecker } from "./aim-and-shoot/utilities/event-checker";
 
 export class Game implements IDisposable {
   private isRunning = false;
@@ -29,6 +35,8 @@ export class Game implements IDisposable {
   private world: World<Entity>;
 
   private queries: IQueries;
+
+  private emitter: TypedEventEmitter<IGameEventMap>;
 
   constructor(canvas: HTMLCanvasElement) {
     this.systems = [
@@ -46,41 +54,14 @@ export class Game implements IDisposable {
     ];
 
     this.world = new World<Entity>();
-    this.queries = {
-      Time: this.world.with("timeComponent"),
-      Event: this.world.with("eventQueue", "events"),
-      bullet: this.world.with("particle", "attackEffect"),
-      player: this.world.with(
-        "id",
-        "particle",
-        "health",
-        "projectileEmitter",
-        "warrior",
-        "statistics"
-      ),
-      humanPlayer: this.world
-        .with(
-          "particle",
-          "health",
-          "projectileEmitter",
-          "warrior",
-          "statistics"
-        )
-        .without("brain"),
-      botPlayer: this.world.with(
-        "particle",
-        "health",
-        "projectileEmitter",
-        "warrior",
-        "statistics",
-        "brain"
-      ),
-    };
+    this.queries = GameHelper.createQueries(this.world);
 
     this.init();
+    this.emitter = new TypedEventEmitter();
   }
 
   public dispose(): void {
+    this.emitter.removeAllListeners();
     cancelAnimationFrame(this.animationId);
     if (this.isRunning) {
       this.isRunning = false;
@@ -100,7 +81,30 @@ export class Game implements IDisposable {
     cancelAnimationFrame(this.animationId);
   }
 
+  public on = <
+    TEventName extends keyof IGameEventMap & string
+  >(
+    eventName: TEventName,
+    handler: (...eventArg: IGameEventMap[TEventName]) => void
+  ): void => {
+    this.emitter.on(eventName, handler);
+  };
+
+  public off = <
+    TEventName extends keyof IGameEventMap & string
+  >(
+    eventName: TEventName,
+    handler: (...eventArg: IGameEventMap[TEventName]) => void
+  ): void => {
+    this.emitter.off(eventName, handler);
+  };
+
   private update = () => {
+    const { eventQueue } = this.queries.Event.first!;
+    eventQueue.filter(EventChecker.isAgentDeadEvent).forEach(({ payload }) => {
+      this.emitter.emit("agent-dead", payload);
+    });
+
     this.systems.forEach((item) => item.update(this.world, this.queries));
     if (!this.isRunning) {
       this.systems.forEach((system) => system.dispose());

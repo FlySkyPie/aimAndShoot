@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid";
+import { faker } from "@faker-js/faker";
 
 import type { AgentEntity } from "../entities";
 import { DejavuComponent } from "../components/dejavu/dejavu";
@@ -24,6 +25,7 @@ export abstract class EntityFactory {
         spread: 5,
       },
       warrior: {
+        name: "Human Player",
         color: [0, 0, 0],
         looking: { x: 0, y: 0 },
         isMoving: {
@@ -70,6 +72,7 @@ export abstract class EntityFactory {
         spread: 5,
       },
       warrior: {
+        name: faker.internet.userName(),
         color: [
           Math.floor(Math.random() * 256),
           Math.floor(Math.random() * 256),

@@ -79,13 +79,13 @@ export class MovementSystem implements IUpdatable, IDisposable {
     if (health.current <= 0) {
       warrior.isDead = true;
 
-      eventQueue.push({
-        type: "agent-dead",
-        payload: {
-          name: id,
-          isBot: brain !== undefined,
-        },
-      });
+      // eventQueue.push({
+      //   type: "agent-dead",
+      //   payload: {
+      //     name: id,
+      //     isBot: brain !== undefined,
+      //   },
+      // });
 
       statistics.age = (Date.now() - timeComponent.startTime) / 1000;
 
@@ -144,6 +144,16 @@ export class MovementSystem implements IUpdatable, IDisposable {
       warrior.speed.y = -warrior.speed.y;
       statistics.selfInjury += 1;
       health.current -= 0.25;
+    }
+
+    if (health.current <= 0) {
+      eventQueue.push({
+        type: "agent-dead",
+        payload: {
+          name: warrior.name,
+          isBot: brain !== undefined,
+        },
+      });
     }
 
     warrior.speed.x *= warrior.friction;

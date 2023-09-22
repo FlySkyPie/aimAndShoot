@@ -1,7 +1,22 @@
+import type { IGameEventMap } from "../game/interfaces/game-event-map";
 import { Game } from "../game/game";
 
 export class BattleZone extends HTMLElement {
   private game: Game | null = null;
+
+  public on<TEventName extends keyof IGameEventMap & string>(
+    eventName: TEventName,
+    handler: (...eventArg: IGameEventMap[TEventName]) => void
+  ): void {
+    this.game?.on(eventName, handler);
+  }
+
+  public off<TEventName extends keyof IGameEventMap & string>(
+    eventName: TEventName,
+    handler: (...eventArg: IGameEventMap[TEventName]) => void
+  ): void {
+    this.game?.off(eventName, handler);
+  }
 
   connectedCallback() {
     const canvas = document.createElement("canvas");
