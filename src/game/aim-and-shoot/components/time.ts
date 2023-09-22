@@ -4,4 +4,5 @@ export interface TimeComponent {
   deltaTime: number;
   startTime: number;
   totalTime: number;
+  generation: number;
 }

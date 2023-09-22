@@ -25,8 +25,21 @@ export type AgentDeadEvent = {
   };
 };
 
+export type CombatStartedEvent = {
+  type: "combat-started";
+  payload: {
+    generation: number;
+    agents: {
+      id: string;
+      name: string;
+      color: string;
+    }[];
+  };
+};
+
 export type GameEvent =
   | ShootEvent
   | InitialCombatEvent
   | EvolveCombatEvent
-  | AgentDeadEvent;
+  | AgentDeadEvent
+  | CombatStartedEvent;

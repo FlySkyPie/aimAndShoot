@@ -25,19 +25,8 @@ type IQueryAgent = With<
  */
 export class CombatSetupSystem implements IUpdatable, IDisposable {
   public update(world: World<Entity>, queries: IQueries): void {
-    let allDead = queries.botPlayer.size === 0 ? false : true;
-    for (const { warrior } of queries.botPlayer) {
-      if (!warrior.isDead) {
-        allDead = false;
-
-        break;
-      }
-    }
     const { timeComponent } = queries.Time.first!;
     const { events, eventQueue } = queries.Event.first!;
-    if (allDead) {
-      eventQueue.push({ type: "evolve-combat" });
-    }
 
     const initialEvents = events.filter(
       ({ type }) => type === "initial-combat"
@@ -58,11 +47,53 @@ export class CombatSetupSystem implements IUpdatable, IDisposable {
       for (let i = 0; i < Constants.maxEnemies; i++) {
         world.add<AgentEntity>(EntityFactory.createBotAgent());
       }
+      timeComponent.generation = 1;
+
+      eventQueue.push({
+        type: "combat-started",
+        payload: {
+          generation: timeComponent.generation,
+          agents: queries.player.entities.map(
+            ({ id, warrior: { name, color } }) => ({
+              id,
+              name: name,
+              color: `rgb(${color[0]},${color[1]},${color[2]})`,
+            })
+          ),
+        },
+      });
     }
 
     const evolveEvents = events.filter(({ type }) => type === "evolve-combat");
+    let allDead = queries.botPlayer.size === 0 ? false : true;
+    for (const { warrior } of queries.botPlayer) {
+      if (!warrior.isDead) {
+        allDead = false;
+
+        break;
+      }
+    }
     if (evolveEvents.length !== 0) {
       this.handleEvolveCombatEvent(world, queries, timeComponent);
+      timeComponent.generation += 1;
+
+      eventQueue.push({
+        type: "combat-started",
+        payload: {
+          generation: timeComponent.generation,
+          agents: queries.player.entities.map(
+            ({ id, warrior: { name, color } }) => ({
+              id,
+              name: name,
+              color: `rgb(${color[0]},${color[1]},${color[2]})`,
+            })
+          ),
+        },
+      });
+    } else {
+      if (allDead) {
+        eventQueue.push({ type: "evolve-combat" });
+      }
     }
   }
 

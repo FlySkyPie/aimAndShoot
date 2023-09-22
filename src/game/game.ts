@@ -81,18 +81,14 @@ export class Game implements IDisposable {
     cancelAnimationFrame(this.animationId);
   }
 
-  public on = <
-    TEventName extends keyof IGameEventMap & string
-  >(
+  public on = <TEventName extends keyof IGameEventMap & string>(
     eventName: TEventName,
     handler: (...eventArg: IGameEventMap[TEventName]) => void
   ): void => {
     this.emitter.on(eventName, handler);
   };
 
-  public off = <
-    TEventName extends keyof IGameEventMap & string
-  >(
+  public off = <TEventName extends keyof IGameEventMap & string>(
     eventName: TEventName,
     handler: (...eventArg: IGameEventMap[TEventName]) => void
   ): void => {
@@ -103,6 +99,9 @@ export class Game implements IDisposable {
     const { eventQueue } = this.queries.Event.first!;
     eventQueue.filter(EventChecker.isAgentDeadEvent).forEach(({ payload }) => {
       this.emitter.emit("agent-dead", payload);
+    });
+    eventQueue.filter(EventChecker.isCombatStartedEventt).forEach(({ payload }) => {
+      this.emitter.emit("combate-start", payload);
     });
 
     this.systems.forEach((item) => item.update(this.world, this.queries));
@@ -123,6 +122,7 @@ export class Game implements IDisposable {
         deltaTime: Date.now(),
         startTime: Date.now(),
         totalTime: 0,
+        generation: 1,
       },
     });
 

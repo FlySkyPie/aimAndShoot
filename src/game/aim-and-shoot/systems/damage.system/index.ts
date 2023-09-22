@@ -18,11 +18,11 @@ export class DamageSystem implements IUpdatable, IDisposable {
       const { particle, attackEffect } = bullet;
       const { angle, size } = particle;
       const { targets, owner: ownerId } = attackEffect;
-      const owner = world.entity(ownerId) as AgentEntity;
+      const owner = world.entity(ownerId) as AgentEntity | undefined;
 
       for (const agentId of targets) {
         const agent = world.entity(agentId) as AgentEntity | undefined;
-        if (!agent) {
+        if (!agent || !owner) {
           continue;
         }
         if (agent.warrior.isDead) {

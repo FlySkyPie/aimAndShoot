@@ -21,8 +21,8 @@ export const AgentIcon: React.FC<IProps> = ({ color }) => {
           colorInterpolationFilters="sRGB"
         >
           <feFlood
-            flood-color="rgb(0,0,0)"
-            flood-opacity=".49804"
+            floodColor="rgb(0,0,0)"
+            floodOpacity=".49804"
             result="flood"
           />
           <feComposite
@@ -44,8 +44,8 @@ export const AgentIcon: React.FC<IProps> = ({ color }) => {
           colorInterpolationFilters="sRGB"
         >
           <feFlood
-            flood-color="rgb(0,0,0)"
-            flood-opacity=".49804"
+            floodColor="rgb(0,0,0)"
+            floodOpacity=".49804"
             result="flood"
           />
           <feComposite
@@ -67,7 +67,7 @@ export const AgentIcon: React.FC<IProps> = ({ color }) => {
           width="12.338"
           height="3.9005"
           filter="url(#filter468)"
-        //   stop-color="#000000"
+          //   stop-color="#000000"
           //   style="paint-order:markers stroke fill"
         />
         <circle
@@ -76,7 +76,7 @@ export const AgentIcon: React.FC<IProps> = ({ color }) => {
           cy="18.891"
           r="8"
           filter="url(#filter456)"
-        //   stop-color="#000000"
+          //   stop-color="#000000"
           //   style="paint-order:markers stroke fill"
         />
       </g>

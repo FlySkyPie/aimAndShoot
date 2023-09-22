@@ -1,19 +1,20 @@
 import { useEffect, useMemo, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, Slide, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { BattleZone } from "../web-components/battle-zone";
 
 import { AgentList } from "./components/agent-list";
 import { IntroPage } from "./components/intro-page";
-import { AgentStatus } from "./components/agent-status";
+import { AgentStatus, IAgent } from "./components/agent-status";
 
 import styles from "./styles.module.scss";
 
-export const CombatPanel: React.FC = () => {
-  const [isStart, setStart] = useState(false);
-
+const GameScreen: React.FC = () => {
   const [battleZone, setBattleZone] = useState<BattleZone | null>(null);
+  const [generation, setGeneration] = useState(0);
+  const [agents, setAgents] = useState<IAgent[]>([]);
+
   useEffect(() => {
     if (!battleZone) {
       return;
@@ -31,18 +32,34 @@ export const CombatPanel: React.FC = () => {
         toast.info(`${name} killed by ${kiiledBy}`);
       }
     });
+
+    battleZone.on("combate-start", ({ generation, agents }) => {
+      setGeneration(generation);
+      setAgents(
+        agents.map((item) => ({
+          ...item,
+          health: 1,
+        }))
+      );
+    });
   }, [battleZone]);
+
+  return (
+    <div className={styles.root}>
+      <AgentList />
+      {/* <div className={styles.canvas} /> */}
+      <battle-zone ref={setBattleZone} class={styles.canvas}></battle-zone>
+      <AgentStatus generation={generation} agents={agents} />
+    </div>
+  );
+};
+
+export const CombatPanel: React.FC = () => {
+  const [isStart, setStart] = useState(false);
 
   const pageView = useMemo(() => {
     if (isStart) {
-      return (
-        <div className={styles.root}>
-          <AgentList />
-          {/* <div className={styles.canvas} /> */}
-          <battle-zone ref={setBattleZone} class={styles.canvas}></battle-zone>
-          <AgentStatus />
-        </div>
-      );
+      return <GameScreen />;
     }
 
     return <IntroPage onStart={() => setStart(true)} />;
@@ -51,7 +68,11 @@ export const CombatPanel: React.FC = () => {
   return (
     <>
       {pageView}
-      <ToastContainer hideProgressBar position="bottom-right" />
+      <ToastContainer
+        hideProgressBar
+        transition={Slide}
+        position="bottom-right"
+      />
     </>
   );
 };
