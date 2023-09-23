@@ -6,8 +6,16 @@ import type { TypedEventEmitter } from "../../../utilities/typed-event-emitter";
 import type { Entity, IQueries } from "../../entities";
 import { EventChecker } from "../../utilities/event-checker";
 
+type IAgentSimpleStatus = {
+  id: string;
+  health: number;
+};
+
 export class ExternalEventSystem implements IUpdatable, IDisposable {
-  constructor(private emitter: TypedEventEmitter<IGameEventMap>) {}
+  private lastUpdate: number;
+  constructor(private emitter: TypedEventEmitter<IGameEventMap>) {
+    this.lastUpdate = performance.now();
+  }
 
   public update(_: World<Entity>, queries: IQueries): void {
     const { events } = queries.Event.first!;
@@ -17,6 +25,22 @@ export class ExternalEventSystem implements IUpdatable, IDisposable {
     events.filter(EventChecker.isCombatStartedEventt).forEach(({ payload }) => {
       this.emitter.emit("combate-start", payload);
     });
+
+    const currentTime = performance.now();
+    if (currentTime - this.lastUpdate > 300) {
+      console.log("update", currentTime, this.lastUpdate);
+      this.lastUpdate = currentTime;
+
+      const agents: IAgentSimpleStatus[] = [];
+      for (const { id, health } of queries.player) {
+        agents.push({
+          id,
+          health: health.current / health.max,
+        });
+      }
+
+      this.emitter.emit("combate-updated", { agents });
+    }
   }
 
   public dispose(): void {

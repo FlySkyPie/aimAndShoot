@@ -42,6 +42,21 @@ const GameScreen: React.FC = () => {
         }))
       );
     });
+
+    battleZone.on("combate-updated", ({ agents }) => {
+      setAgents((prev) =>
+        prev.map((agent) => {
+          const next = agents.find((item) => item.id === agent.id);
+          if (!next) {
+            return agent;
+          }
+          return {
+            ...agent,
+            health: next.health,
+          };
+        })
+      );
+    });
   }, [battleZone]);
 
   return (
