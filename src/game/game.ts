@@ -22,8 +22,8 @@ import {
   BotAISystem,
   ProjectileSystem,
   DamageSystem,
+  ExternalEventSystem,
 } from "./aim-and-shoot/systems";
-import { EventChecker } from "./aim-and-shoot/utilities/event-checker";
 
 export class Game implements IDisposable {
   private isRunning = false;
@@ -39,6 +39,8 @@ export class Game implements IDisposable {
   private emitter: TypedEventEmitter<IGameEventMap>;
 
   constructor(canvas: HTMLCanvasElement) {
+    this.emitter = new TypedEventEmitter();
+
     this.systems = [
       new EventSystem(),
       new TimeTickSystem(),
@@ -50,6 +52,7 @@ export class Game implements IDisposable {
       new RenderSystem(canvas),
       new PoolCleanSystem(),
       new CombatSetupSystem(),
+      new ExternalEventSystem(this.emitter),
       new PostTimeTickSystem(),
     ];
 
@@ -57,7 +60,6 @@ export class Game implements IDisposable {
     this.queries = GameHelper.createQueries(this.world);
 
     this.init();
-    this.emitter = new TypedEventEmitter();
   }
 
   public dispose(): void {
@@ -96,14 +98,6 @@ export class Game implements IDisposable {
   };
 
   private update = () => {
-    const { eventQueue } = this.queries.Event.first!;
-    eventQueue.filter(EventChecker.isAgentDeadEvent).forEach(({ payload }) => {
-      this.emitter.emit("agent-dead", payload);
-    });
-    eventQueue.filter(EventChecker.isCombatStartedEventt).forEach(({ payload }) => {
-      this.emitter.emit("combate-start", payload);
-    });
-
     this.systems.forEach((item) => item.update(this.world, this.queries));
     if (!this.isRunning) {
       this.systems.forEach((system) => system.dispose());

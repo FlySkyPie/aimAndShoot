@@ -46,10 +46,9 @@ const GameScreen: React.FC = () => {
 
   return (
     <div className={styles.root}>
-      <AgentList />
-      {/* <div className={styles.canvas} /> */}
-      <battle-zone ref={setBattleZone} class={styles.canvas}></battle-zone>
       <AgentStatus generation={generation} agents={agents} />
+      <battle-zone ref={setBattleZone} class={styles.canvas}></battle-zone>
+      <AgentList />
     </div>
   );
 };
