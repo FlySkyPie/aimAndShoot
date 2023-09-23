@@ -67,8 +67,6 @@ export const AgentIcon: React.FC<IProps> = ({ color }) => {
           width="12.338"
           height="3.9005"
           filter="url(#filter468)"
-          //   stop-color="#000000"
-          //   style="paint-order:markers stroke fill"
         />
         <circle
           transform="rotate(-45)"
@@ -76,8 +74,6 @@ export const AgentIcon: React.FC<IProps> = ({ color }) => {
           cy="18.891"
           r="8"
           filter="url(#filter456)"
-          //   stop-color="#000000"
-          //   style="paint-order:markers stroke fill"
         />
       </g>
     </svg>

@@ -1,4 +1,10 @@
-import type { AgentDeadEvent, CombatStartedEvent, GameEvent, ShootEvent } from "../events";
+import type {
+  AgentDeadEvent,
+  CombatStartedEvent,
+  CombatStatisticsEvent,
+  GameEvent,
+  ShootEvent,
+} from "../events";
 
 export abstract class EventChecker {
   public static isShootEvent(event: GameEvent): event is ShootEvent {
@@ -9,9 +15,15 @@ export abstract class EventChecker {
     return event.type === "agent-dead";
   }
 
-  public static isCombatStartedEventt(
+  public static isCombatStartedEvent(
     event: GameEvent
   ): event is CombatStartedEvent {
     return event.type === "combat-started";
+  }
+
+  public static isCombatStatisticsEvent(
+    event: GameEvent
+  ): event is CombatStatisticsEvent {
+    return event.type === "combat-statistics";
   }
 }

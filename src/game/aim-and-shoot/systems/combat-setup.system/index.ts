@@ -17,6 +17,13 @@ type IQueryAgent = With<
   | "statistics"
 >;
 
+type IScore = {
+  id: string;
+  name: string;
+  color: string;
+  hitRate: number;
+};
+
 /**
  * @dependency Dependencies:
  * - `InitialCombatEvent`
@@ -93,6 +100,20 @@ export class CombatSetupSystem implements IUpdatable, IDisposable {
     } else {
       if (allDead) {
         eventQueue.push({ type: "evolve-combat" });
+        const payload: IScore[] = [];
+        for (const {
+          id,
+          warrior: { name, color },
+          statistics,
+        } of queries.player) {
+          payload.push({
+            id,
+            name: name,
+            color: `rgb(${color[0]},${color[1]},${color[2]})`,
+            hitRate: this.divide(statistics.hits, statistics.shootsFired),
+          });
+        }
+        eventQueue.push({ type: "combat-statistics", payload });
       }
     }
   }

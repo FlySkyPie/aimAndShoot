@@ -22,7 +22,7 @@ export class ExternalEventSystem implements IUpdatable, IDisposable {
     events.filter(EventChecker.isAgentDeadEvent).forEach(({ payload }) => {
       this.emitter.emit("agent-dead", payload);
     });
-    events.filter(EventChecker.isCombatStartedEventt).forEach(({ payload }) => {
+    events.filter(EventChecker.isCombatStartedEvent).forEach(({ payload }) => {
       this.emitter.emit("combate-start", payload);
     });
 
@@ -40,6 +40,12 @@ export class ExternalEventSystem implements IUpdatable, IDisposable {
 
       this.emitter.emit("combate-updated", { agents });
     }
+
+    events
+      .filter(EventChecker.isCombatStatisticsEvent)
+      .forEach(({ payload }) => {
+        this.emitter.emit("combate-end", { scoreboard: payload });
+      });
   }
 
   public dispose(): void {

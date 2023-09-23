@@ -20,16 +20,18 @@ export type ICombatUpdatedEvent = {
   }[];
 };
 
+export type ICombatEndEvent = {
+  scoreboard: {
+    id: string;
+    name: string;
+    color: string;
+    hitRate: number;
+  }[];
+};
+
 export interface IGameEventMap {
   ["agent-dead"]: [IAgentDeadEvent];
   ["combate-start"]: [ICombatStartEvent];
   ["combate-updated"]: [ICombatUpdatedEvent];
-  ["combate-end"]: [
-    {
-      agents: {
-        id: string;
-        hitRate: number;
-      }[];
-    }
-  ];
+  ["combate-end"]: [ICombatEndEvent];
 }

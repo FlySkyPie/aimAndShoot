@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { BattleZone } from "../web-components/battle-zone";
 
-import { AgentList } from "./components/agent-list";
+import { IScore, Scoreboard } from "./components/scoreboard";
 import { IntroPage } from "./components/intro-page";
 import { AgentStatus, IAgent } from "./components/agent-status";
 
@@ -14,6 +14,7 @@ const GameScreen: React.FC = () => {
   const [battleZone, setBattleZone] = useState<BattleZone | null>(null);
   const [generation, setGeneration] = useState(0);
   const [agents, setAgents] = useState<IAgent[]>([]);
+  const [scores, steScores] = useState<IScore[]>([]);
 
   useEffect(() => {
     if (!battleZone) {
@@ -57,13 +58,17 @@ const GameScreen: React.FC = () => {
         })
       );
     });
+
+    battleZone.on("combate-end", ({ scoreboard }) => {
+      steScores(scoreboard);
+    });
   }, [battleZone]);
 
   return (
     <div className={styles.root}>
       <AgentStatus generation={generation} agents={agents} />
       <battle-zone ref={setBattleZone} class={styles.canvas}></battle-zone>
-      <AgentList />
+      <Scoreboard scores={scores} />
     </div>
   );
 };

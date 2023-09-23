@@ -37,16 +37,20 @@ export type CombatStartedEvent = {
   };
 };
 
-// export type SoundEffectEvent = {
-//   type: "play-sound";
-//   payload: {
-//     sound: "gun-fire";
-//   };
-// };
+export type CombatStatisticsEvent = {
+  type: "combat-statistics";
+  payload: {
+    id: string;
+    name: string;
+    color: string;
+    hitRate: number;
+  }[];
+};
 
 export type GameEvent =
   | ShootEvent
   | InitialCombatEvent
   | EvolveCombatEvent
   | AgentDeadEvent
-  | CombatStartedEvent;
+  | CombatStartedEvent
+  | CombatStatisticsEvent;

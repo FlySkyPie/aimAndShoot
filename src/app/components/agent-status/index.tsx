@@ -6,7 +6,8 @@ import Typography from "@mui/joy/Typography";
 import LinearProgress from "@mui/joy/LinearProgress";
 import { Input } from "@mui/joy";
 
-import { AgentIcon } from "./icon";
+import { AgentIcon } from "../../atoms/agent-icon";
+
 import styles from "./styles.module.scss";
 
 export type IAgent = {
