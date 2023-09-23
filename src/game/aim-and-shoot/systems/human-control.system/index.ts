@@ -23,6 +23,7 @@ export class HumanControlSystem implements IUpdatable, IDisposable {
     this.canvas.addEventListener("mousemove", this.handleMousemove);
     this.canvas.addEventListener("mouseup", this.handleMouseup);
     this.canvas.addEventListener("mousedown", this.handleMousedown);
+    this.canvas.addEventListener("contextmenu", this.handleContextMenu);
   }
 
   public update(_: World<Entity>, queries: IQueries): void {
@@ -45,6 +46,7 @@ export class HumanControlSystem implements IUpdatable, IDisposable {
     this.canvas.removeEventListener("mousemove", this.handleMousemove);
     this.canvas.removeEventListener("mouseup", this.handleMouseup);
     this.canvas.removeEventListener("mousedown", this.handleMousedown);
+    this.canvas.removeEventListener("contextmenu", this.handleContextMenu);
   }
 
   private handleKeydown = (e: KeyboardEvent) => {
@@ -121,5 +123,10 @@ export class HumanControlSystem implements IUpdatable, IDisposable {
   private handleMousedown = (e: MouseEvent) => {
     e.preventDefault();
     this.isShooting = true;
+  };
+
+  private handleContextMenu = (event: MouseEvent) => {
+    event.preventDefault();
+    // return false;
   };
 }
