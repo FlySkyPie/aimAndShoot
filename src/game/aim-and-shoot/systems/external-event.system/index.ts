@@ -28,7 +28,6 @@ export class ExternalEventSystem implements IUpdatable, IDisposable {
 
     const currentTime = performance.now();
     if (currentTime - this.lastUpdate > 300) {
-      console.log("update", currentTime, this.lastUpdate);
       this.lastUpdate = currentTime;
 
       const agents: IAgentSimpleStatus[] = [];

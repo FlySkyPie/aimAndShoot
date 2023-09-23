@@ -1,8 +1,6 @@
 import type { World } from "miniplex";
-import { Howl } from "howler";
 
 import type { IUpdatable, IDisposable } from "../../../interfaces";
-import gunSfxUrl from "../../assets/gun-sfx/Air-rifle-gun-shot.mp3";
 
 import type { BulletEntity, Entity, IQueries } from "../../entities";
 import { EventChecker } from "../../utilities/event-checker";
@@ -17,11 +15,6 @@ const isNotUndefined = <T>(value: T | undefined): value is T =>
  * - Create `BulletEntity`
  */
 export class ProjectileSystem implements IUpdatable, IDisposable {
-  private fireSFX = new Howl({
-    src: [gunSfxUrl],
-    volume: 0.3,
-  });
-
   public update(world: World<Entity>, queries: IQueries): void {
     const { events } = queries.Event.first!;
 
@@ -31,8 +24,6 @@ export class ProjectileSystem implements IUpdatable, IDisposable {
         .map((item) => world.id(item))
         .filter(isNotUndefined);
       shootEvents.forEach(({ paylaod: { angle, ownerId, x, y } }) => {
-        this.fireSFX.play();
-
         world.add<BulletEntity>({
           attackEffect: {
             damage: 1,
@@ -54,7 +45,5 @@ export class ProjectileSystem implements IUpdatable, IDisposable {
     }
   }
 
-  public dispose(): void {
-    this.fireSFX.unload();
-  }
+  public dispose(): void {}
 }

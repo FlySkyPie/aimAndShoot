@@ -23,6 +23,7 @@ import {
   ProjectileSystem,
   DamageSystem,
   ExternalEventSystem,
+  SoundEffectSystem,
 } from "./aim-and-shoot/systems";
 
 export class Game implements IDisposable {
@@ -52,6 +53,7 @@ export class Game implements IDisposable {
       new RenderSystem(canvas),
       new PoolCleanSystem(),
       new CombatSetupSystem(),
+      new SoundEffectSystem(),
       new ExternalEventSystem(this.emitter),
       new PostTimeTickSystem(),
     ];

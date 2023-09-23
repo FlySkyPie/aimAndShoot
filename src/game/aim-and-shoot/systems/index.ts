@@ -10,3 +10,4 @@ export { BotAISystem } from "./bot-ai.system";
 export { ProjectileSystem } from "./projectile.system";
 export { DamageSystem } from "./damage.system";
 export { ExternalEventSystem } from "./external-event.system";
+export { SoundEffectSystem } from "./sound-effect.system";

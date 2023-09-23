@@ -37,6 +37,13 @@ export type CombatStartedEvent = {
   };
 };
 
+// export type SoundEffectEvent = {
+//   type: "play-sound";
+//   payload: {
+//     sound: "gun-fire";
+//   };
+// };
+
 export type GameEvent =
   | ShootEvent
   | InitialCombatEvent
