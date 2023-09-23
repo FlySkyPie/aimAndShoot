@@ -1,9 +1,9 @@
 import { nanoid } from "nanoid";
-import { faker } from "@faker-js/faker";
 
-import type { AgentEntity } from "../entities";
-import { DejavuComponent } from "../components/dejavu/dejavu";
-import { Constants } from "../constants";
+import type { AgentEntity } from "../../entities";
+import { DejavuComponent } from "../../components/dejavu/dejavu";
+import { Constants } from "../../constants";
+import { NameFaker } from "../name-faker/name-faker";
 
 export abstract class EntityFactory {
   public static createAgent(): AgentEntity {
@@ -72,7 +72,7 @@ export abstract class EntityFactory {
         spread: 5,
       },
       warrior: {
-        name: faker.internet.userName(),
+        name: NameFaker.fakeUsername(),
         color: [
           Math.floor(Math.random() * 256),
           Math.floor(Math.random() * 256),

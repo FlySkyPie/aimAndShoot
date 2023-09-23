@@ -3,7 +3,7 @@ import type { With, World } from "miniplex";
 import type { IUpdatable, IDisposable } from "../../../interfaces";
 
 import type { AgentEntity, Entity, IQueries } from "../../entities";
-import { EntityFactory } from "../../utilities/entity-factory";
+import { EntityFactory } from "../../utilities/entity-factory/entity-factory";
 import { Constants } from "../../constants";
 import { TimeComponent } from "../../components";
 
