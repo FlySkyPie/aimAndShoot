@@ -22,10 +22,13 @@ export const IntroPage: React.FC<IProps> = ({ onStart }) => {
   const description = useMemo(() => {
     switch (input) {
       case "W":
+        return "Move up (↑ also work)";
       case "A":
+        return "Move left (← also work)";
       case "S":
+        return "Move down (↓ also work)";
       case "D":
-        return "Move";
+        return "Move right (→ also work)";
 
       case "mouse-left":
         return "Shoot";

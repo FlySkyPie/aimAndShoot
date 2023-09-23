@@ -1,27 +1,59 @@
-# React + TypeScript + Vite
+# Aim and Shoot
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![](./img/00_hero.webp)
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Compare to original project [victorqribeiro/aimAndShoot](https://github.com/victorqribeiro/aimAndShoot) here is some different(game perspective):
 
-## Expanding the ESLint configuration
+### Changed
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Battle area change from `1366*768` to `1024*1024`.
+- Change sound effect of gun fire.
+- Change original intro page to control guide.
 
-- Configure the top-level `parserOptions` property like this:
+### Added
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+- Add dead notification.
+- Add simple scoreboard.
+- Add simple player list.
+
+### Fixed
+
+- Fix shooting frozen when cooldown is exhausted.
+- Fix sound effect play glitch.
+
+### Removed
+
+- Touch device support is removed.
+
+## Background
+
+I want to implement ECS (Entity Component System) to my side project, but I can't suddenly thinking in the "ECS way", I need some practice first, so I picked up the [project](https://github.com/victorqribeiro/aimAndShoot).
+
+First I refactoring the project in Typescript, then move implementation to ECS, and I wrappered the game to React app. Here is some tech stack is used on the project:
+- React
+  - Frontend framework.
+- PNPM, Vite
+  - Package manager, build/bundle tool
+- [Web component](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)
+- ECS (Entity Component System)
+  - The majar topic I want to learning on this project.
+  - I choose [miniplex](https://github.com/hmans/miniplex) as the ECS framework I going to used.
+- Joy UI
+  - A fancy React lib, provide component with simple style, almost all components have 1-1 relationship with Material UI.
+
+## Development
+
+```shell
+pnpm install
+pnpm dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Credits
+
+- [Air-rifle-gun-shot.mp3](./src/game/aim-and-shoot/assets//gun-sfx/Air-rifle-gun-shot.mp3)
+  - The work is licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License](http://creativecommons.org/licenses/by-nc/4.0/).
+  - Author: [Alexander](https://orangefreesounds.com/air-gun-pistol-sound-effect/)
+- [Name dataset](./src/game/aim-and-shoot/utilities/name-faker/)
+  - Extract from [@faker-js/faker](https://github.com/faker-js/faker) proejct.
