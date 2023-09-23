@@ -1,7 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ToastContainer, Slide, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import type {
+  IAgentDeadEvent,
+  ICombatEndEvent,
+  ICombatStartEvent,
+  ICombatUpdatedEvent,
+} from "../game/interfaces/game-event-map";
 import { BattleZone } from "../web-components/battle-zone";
 
 import { IScore, Scoreboard } from "./components/scoreboard";
@@ -10,7 +16,11 @@ import { AgentStatus, IAgent } from "./components/agent-status";
 
 import styles from "./styles.module.scss";
 
-const GameScreen: React.FC = () => {
+type IGameProps = {
+  onDead: () => void;
+};
+
+const GameScreen: React.FC<IGameProps> = ({ onDead }) => {
   const [battleZone, setBattleZone] = useState<BattleZone | null>(null);
   const [generation, setGeneration] = useState(0);
   const [agents, setAgents] = useState<IAgent[]>([]);
@@ -21,10 +31,10 @@ const GameScreen: React.FC = () => {
       return;
     }
 
-    // const agentDeadHandler = () => {};
-    battleZone.on("agent-dead", ({ isBot, name, kiiledBy }) => {
+    const handleAgentDead = ({ isBot, name, kiiledBy }: IAgentDeadEvent) => {
       if (!isBot) {
         toast.warn(`You Dead`);
+        onDead();
         return;
       }
       if (!kiiledBy) {
@@ -32,9 +42,9 @@ const GameScreen: React.FC = () => {
       } else {
         toast.info(`${name} killed by ${kiiledBy}`);
       }
-    });
+    };
 
-    battleZone.on("combate-start", ({ generation, agents }) => {
+    const handleCombatStart = ({ generation, agents }: ICombatStartEvent) => {
       setGeneration(generation);
       setAgents(
         agents.map((item) => ({
@@ -42,9 +52,9 @@ const GameScreen: React.FC = () => {
           health: 1,
         }))
       );
-    });
+    };
 
-    battleZone.on("combate-updated", ({ agents }) => {
+    const handleCombatUpdated = ({ agents }: ICombatUpdatedEvent) => {
       setAgents((prev) =>
         prev.map((agent) => {
           const next = agents.find((item) => item.id === agent.id);
@@ -57,12 +67,24 @@ const GameScreen: React.FC = () => {
           };
         })
       );
-    });
+    };
 
-    battleZone.on("combate-end", ({ scoreboard }) => {
+    const handleCombatEnd = ({ scoreboard }: ICombatEndEvent) => {
       steScores(scoreboard);
-    });
-  }, [battleZone]);
+    };
+
+    battleZone.on("agent-dead", handleAgentDead);
+    battleZone.on("combate-start", handleCombatStart);
+    battleZone.on("combate-updated", handleCombatUpdated);
+    battleZone.on("combate-end", handleCombatEnd);
+
+    return () => {
+      battleZone.off("agent-dead", handleAgentDead);
+      battleZone.off("combate-start", handleCombatStart);
+      battleZone.off("combate-updated", handleCombatUpdated);
+      battleZone.off("combate-end", handleCombatEnd);
+    };
+  }, [battleZone, onDead]);
 
   return (
     <div className={styles.root}>
@@ -76,13 +98,17 @@ const GameScreen: React.FC = () => {
 export const CombatPanel: React.FC = () => {
   const [isStart, setStart] = useState(false);
 
+  const handleDead = useCallback(() => {
+    setStart(false);
+  }, []);
+
   const pageView = useMemo(() => {
     if (isStart) {
-      return <GameScreen />;
+      return <GameScreen onDead={handleDead} />;
     }
 
     return <IntroPage onStart={() => setStart(true)} />;
-  }, [isStart]);
+  }, [handleDead, isStart]);
 
   return (
     <>
